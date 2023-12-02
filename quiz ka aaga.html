@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quiz</title>
+</head>
+<body>
+    <div id="quizContainer">
+        <div id="question"></div>
+        <label for="opt1" class="option"><input type="radio" name="option" id="opt1" value="1"> <span id="opt1"></span></label>
+        <label for="opt2" class="option"><input type="radio" name="option" id="opt2" value="2"> <span id="opt2"></span></label>
+        <label for="opt3" class="option"><input type="radio" name="option" id="opt3" value="3"> <span id="opt3"></span></label>
+        <label for="opt4" class="option"><input type="radio" name="option" id="opt4" value="4"> <span id="opt4"></span></label>
+        <button id="nextButton" onclick="loadNextQuestion();">Next Question</button>
+    </div>
+    <div id="result" style="display: none;"></div>
+    <script>
+        var currentQuestion = 0;
+        var score = 0;
+        var totQuestions = 20;
+
+        var container = document.getElementById('quizContainer');
+        var questionEl = document.getElementById('question');
+        var opt1 = document.getElementById('opt1');
+        var opt2 = document.getElementById('opt2');
+        var opt3 = document.getElementById('opt3');
+        var opt4 = document.getElementById('opt4');
+        var nextButton = document.getElementById('nextButton');
+        var resultCont = document.getElementById('result');
+
+        var questions = [{
+            question: "Question1?",
+            answer: "Option1",
+            options: ["Option1", "Option2", "Option3", "Option4"]
+        }, {
+            question: "Question2?",
+            answer: "Option2",
+            options: ["Option1", "Option2", "Option3", "Option4"]
+        },
+        // Add more questions up to 20
+        ];
+
+        function loadQuestion(questionIndex) {
+            var q = questions[questionIndex];
+            questionEl.textContent = (questionIndex + 1) + '. ' + q.question;
+            opt1.textContent = q.options[0];
+            opt2.textContent = q.options[1];
+            opt3.textContent = q.options[2];
+            opt4.textContent = q.options[3];
+        };
+
+        function loadNextQuestion() {
+            var selectedOption = document.querySelector('input[type=radio]:checked');
+            if (!selectedOption) {
+                alert('Please select your answer!');
+                return;
+            }
+            var answer = selectedOption.value;
+            if (questions[currentQuestion].answer == answer) {
+                score += 10;
+            }
+            selectedOption.checked = false;
+            currentQuestion++;
+            if (currentQuestion == totQuestions - 1) {
+                nextButton.textContent = 'Finish';
+            }
+            if (currentQuestion == totQuestions) {
+                container.style.display = 'none';
+                resultCont.style.display = '';
+                resultCont.textContent = 'Your Score: ' + score;
+                return;
+            }
+            loadQuestion(currentQuestion);
+        }
+
+        loadQuestion(currentQuestion);
+    </script>
+</body>
+</html>
